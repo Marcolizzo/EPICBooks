@@ -25,8 +25,11 @@ const booksHtml = (book) => {
     const row = document.querySelector(".row");
     const { asin, title, img, price } = book;
     row.innerHTML += `
-        <div class="col mt-3">
+        <div id="${asin}" class="col mt-3">
             <div class="card">
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                <i class="bi bi-cart4"></i>
+                </span>
                 <img src="${img}" class="card-img-top" alt="Copertina" />
                 <div class="card-body">
                     <h5 class="card-title">${title}</h5>
@@ -39,6 +42,7 @@ const booksHtml = (book) => {
             </div>
         </div>`;
     addEvent(book)
+    skip()
 };
 
 
@@ -62,21 +66,27 @@ const addEvent = (book) => {
 
 const addToCart = (book) => {
     const cart = document.querySelector(".cart")
-    cart.innerHTML += `<div class="container d-flex justify-content-between mb-2">
-<img src="${book.img}" class="immagine" alt="copertina"/>
-<div class="titolo">${book.title}</div>
-<div class="prezzo">${book.price}$</div>
-</div>`
+    const card = document.getElementById(`${book.asin}`)
+    const badge = card.querySelector(".badge")
+
+    cart.innerHTML += `<div id="${book.asin}" class="container d-flex justify-content-between mb-2">
+    <img src="${book.img}" class="immagine" alt="copertina"/>
+    <div class="titolo">${book.title}</div>
+    <div class="prezzo">${book.price}$</div>
+    </div>`
+
+    badge.classList.toggle("d-none")
+
 }
 
-
-// const aggiungiCarrello = function () {
-// console.log(libri)
-
-//     const carrello = document.querySelector(".carrello")
-//     carrello.innerHTML += `< div class="container d-flex justify-content-between mb-2" >
-//     <img src="${img}" class="immagine" alt="copertina"/>
-//     <div class="titolo">${title}</div>
-//     <div class="prezzo">${price}$</div>
-//   </div>`
-// }
+const skip = () => {
+    const skipButtons = document.querySelectorAll(".skip")
+    const cards = document.querySelectorAll(".card")
+    skipButtons.forEach((skip, index) => {
+        skip.addEventListener("click", (ev) => {
+            if (ev.target === skip) {
+                cards[index].parentElement.classList.add("d-none")
+            }
+        })
+    })
+}
