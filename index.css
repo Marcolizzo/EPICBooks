@@ -2,6 +2,16 @@
     height: 400px;
 }
 
-.card{
-    /* border: 10px solid rgb(0, 245, 0); */
+.immagine{
+    aspect-ratio: 1/1;
+    width: 100px;
+    background-color: aqua;
+}
+
+.titolo{
+    width: 60%;
+}
+
+.dropdown-menu{
+    width: max-content;
 }

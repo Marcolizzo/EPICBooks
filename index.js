@@ -1,48 +1,69 @@
-// import { fetchLibri } from "./fetch.js";
-// import { createCards } from "./createCard.js";
+let books = []
 
-// document.addEventListener("DOMContentLoaded", function () {
-//     fetchLibri()
-//         .then((data) => {
-//             const row = document.querySelector(".row");
-//             data.map((libri) => {
-//                 const cardHTML = createCards(libri)
-//                 row.innerHTML += cardHTML
-//             });
-//         })
-//         .catch((err) => console.log(err));
-// })
 window.addEventListener('DOMContentLoaded', init);
-
 function init() {
-fetchLibri()
+    getBooks();
 }
 
-const aggiungiCarrello = function (asin) {
-    console.log(asin)
-}
+function getBooks() {
+    fetch("https://striveschool-api.herokuapp.com/books")
+        .then((res) => res.json())
+        .then((data) => {
+            displayBooks(data)
+        })
+        .catch((err) => console.log("Error:" + err));
+};
 
-function fetchLibri() {fetch("https://striveschool-api.herokuapp.com/books")
-    .then((res) => res.json())
-    .then((data) => {
-        const row = document.querySelector(".row");
-        data.map((libri) => {
-            const { asin, title, img, price } = libri;
-            row.innerHTML += `<div class="col mt-3">
-                <div class="card">
-                  <img src="${img}" class="card-img-top" alt="Copertina" />
-                  <div class="card-body">
+const booksHtml = (book) => {
+    const row = document.querySelector(".row");
+    const { asin, title, img, price } = book;
+    row.innerHTML +=`
+        <div class="col mt-3">
+            <div class="card">
+                <img src="${img}" class="card-img-top" alt="Copertina" />
+                <div class="card-body">
                     <h5 class="card-title">${title}</h5>
                     <p class="card-text">${price}$</p>
                     <div class="d-flex gap-2">
-                    <button class="btn btn-primary bottoniCarrello" onClick="aggiungiCarrello('${asin}')">Aggiungi al carello</button>
-                    <button class="btn btn-danger">Salta</button>
-                    </div> 
-                  </div>
+                        <button class="btn btn-primary cartButtons" data-asin="${asin}">Add to cart</button>
+                        <button class="btn btn-danger skip">Skip</button>
+                    </div>
                 </div>
-              </div>`;
-        })
-        window.aggiungiCarrello = aggiungiCarrello;
-    })
-    .catch((err) => console.log(err));
+            </div>
+        </div>`;
+    addToCart(book)
+};
+
+
+
+const displayBooks = (books) => {
+   books.map((book) => {
+    booksHtml(book)
+   })
 }
+
+const addToCart = (book) => {
+    // console.log(book)
+    const cartButtons = document.querySelectorAll(".cartButtons")
+    cartButtons.forEach((button) => {
+        button.addEventListener("click", (ev)=> {
+            const target = ev.target
+            const asin = target.getAttribute("data-asin");
+            console.log(asin)
+        })
+    })
+}
+
+
+
+
+// const aggiungiCarrello = function () {
+// console.log(libri)
+
+//     const carrello = document.querySelector(".carrello")
+//     carrello.innerHTML += `< div class="container d-flex justify-content-between mb-2" >
+//     <img src="${img}" class="immagine" alt="copertina"/>
+//     <div class="titolo">${title}</div>
+//     <div class="prezzo">${price}$</div>
+//   </div>`
+// }
