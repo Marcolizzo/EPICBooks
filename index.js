@@ -50,12 +50,14 @@ function eventHandler() {
 
 const addToCart = (book, index) => {
     const exists = cart.some(element => element.asin === book.asin)
-    let counter = 0
+    const badge = document.querySelectorAll(".badge")
+    const cartHtml = document.querySelector(".cart")
+    const totalBooks = document.querySelector(".totalBooks")
     if(exists) {
     console.log("esiste")
     } else {
     cart.push(book)
-    const cartHtml = document.querySelector(".cart")
+    totalBooks.innerHTML = cart.length
     cartHtml.innerHTML += `<div class="container d-flex justify-content-between align-items-center mb-2">
         <div class="itemsCount"></div>
         <img src="${book.img}" class="immagine" alt="copertina" />
@@ -63,7 +65,6 @@ const addToCart = (book, index) => {
         <div class="prezzo">${book.price}$</div>
         </div>`;
     }
-    const badge = document.querySelectorAll(".badge")
     badge[index].classList.remove("d-none")
 }
 
