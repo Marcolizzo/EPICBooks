@@ -66,7 +66,7 @@ const addToCart = (book, index) => {
     const cartHtml = document.querySelector(".cart")
     const totalBooks = document.querySelector(".totalBooks")
     if(exists) {
-    console.log("esiste")
+    alert("This book is already in your cart!")
     } else {
     cart.push(book)
     totalBooks.innerHTML = cart.length
