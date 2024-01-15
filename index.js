@@ -34,6 +34,7 @@ const booksHtml = (book) => {
 function eventHandler() {
     const cartButton = document.querySelectorAll(".cartButton")
     const skipButton = document.querySelectorAll(".skipButton")
+    const trashButton = document.querySelector(".trashButton")
 
     cartButton.forEach((element, index) => {
         element.addEventListener("click", () => {
@@ -44,6 +45,17 @@ function eventHandler() {
     skipButton.forEach((element, index) => {
         element.addEventListener("click", () => {
             skip(index)
+        })
+    })
+
+    trashButton.addEventListener("click", () => {
+        const cartHtml = document.querySelector(".cart")
+        const totalBooks = document.querySelector(".totalBooks")
+        const badge = document.querySelectorAll(".badge")
+        cartHtml.innerHTML = ""
+        totalBooks.innerHTML = 0
+        badge.forEach((element) => {
+            element.classList.add("d-none")
         })
     })
 }
