@@ -66,12 +66,12 @@ const addToCart = (book, index) => {
     const badge = document.querySelectorAll(".badge")
     const cartHtml = document.querySelector(".cart")
     const totalBooks = document.querySelector(".totalBooks")
-    if(exists) {
-    alert("This book is already in your cart!")
+    if (exists) {
+        alert("This book is already in your cart!")
     } else {
-    cart.push(book)
-    totalBooks.innerHTML = cart.length
-    cartHtml.innerHTML += `<div class="container d-flex justify-content-between align-items-center mb-2">
+        cart.push(book)
+        totalBooks.innerHTML = cart.length
+        cartHtml.innerHTML += `<div class="container d-flex justify-content-between align-items-center mb-2">
         <div class="itemsCount"></div>
         <img src="${book.img}" class="immagine" alt="copertina" />
         <div class="titolo">${book.title}</div>

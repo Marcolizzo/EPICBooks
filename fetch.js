@@ -9,4 +9,4 @@ async function getBooks() {
     }
 };
 
-export { getBooks}
+export { getBooks }
