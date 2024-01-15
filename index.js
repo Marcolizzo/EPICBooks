@@ -1,15 +1,13 @@
 import { getBooks, getBookById } from "./fetch.js";
 
 let books = []
+let cart = []
 
 window.addEventListener('DOMContentLoaded', init);
 async function init() {
     books = await getBooks();
     displayBooks(books)
-
-    // addToCart(books)
 }
-
 
 const booksHtml = (book) => {
     const { asin, title, img, price } = book;
@@ -51,15 +49,20 @@ function eventHandler() {
 }
 
 const addToCart = (book, index) => {
-    const cart = document.querySelector(".cart")
-
-    cart.innerHTML += `<div class="container d-flex justify-content-between align-items-center mb-2">
-        <div class="items"></div>
+    const exists = cart.some(element => element.asin === book.asin)
+    let counter = 0
+    if(exists) {
+    console.log("esiste")
+    } else {
+    cart.push(book)
+    const cartHtml = document.querySelector(".cart")
+    cartHtml.innerHTML += `<div class="container d-flex justify-content-between align-items-center mb-2">
+        <div class="itemsCount">${counter}</div>
         <img src="${book.img}" class="immagine" alt="copertina" />
         <div class="titolo">${book.title}</div>
         <div class="prezzo">${book.price}$</div>
-    </div>`;
-
+        </div>`;
+    }
     const badge = document.querySelectorAll(".badge")
     badge[index].classList.remove("d-none")
 }
