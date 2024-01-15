@@ -57,7 +57,7 @@ const addToCart = (book, index) => {
     cart.push(book)
     const cartHtml = document.querySelector(".cart")
     cartHtml.innerHTML += `<div class="container d-flex justify-content-between align-items-center mb-2">
-        <div class="itemsCount">${counter}</div>
+        <div class="itemsCount"></div>
         <img src="${book.img}" class="immagine" alt="copertina" />
         <div class="titolo">${book.title}</div>
         <div class="prezzo">${book.price}$</div>
