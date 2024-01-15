@@ -1,4 +1,4 @@
-import { getBooks, getBookById } from "./fetch.js";
+import { getBooks } from "./fetch.js";
 
 let books = []
 let cart = []
