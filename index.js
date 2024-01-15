@@ -54,6 +54,7 @@ function eventHandler() {
         const badge = document.querySelectorAll(".badge")
         cartHtml.innerHTML = ""
         totalBooks.innerHTML = 0
+        cart = []
         badge.forEach((element) => {
             element.classList.add("d-none")
         })
