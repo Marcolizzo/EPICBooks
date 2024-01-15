@@ -1,30 +1,10 @@
-window.addEventListener('DOMContentLoaded', init);
-function init() {
-    getBooks();
-}
+import { getBooks, getBookById } from "./fetch.js";
 
-function getBooks() {
-    fetch("https://striveschool-api.herokuapp.com/books")
-        .then((res) => res.json())
-        .then((data) => {
-            displayBooks(data)
-        })
-        .catch((err) => console.log("Error:" + err));
-};
-
-function getBookById(asin) {
-    fetch("https://striveschool-api.herokuapp.com/books/" + asin)
-        .then((res) => res.json())
-        .then((data) => {
-            addToCart(data)
-        })
-        .catch((err) => console.log("Error:" + err));
-};
+const books = await getBooks();
 
 const booksHtml = (book) => {
-    const row = document.querySelector(".row");
     const { asin, title, img, price } = book;
-    row.innerHTML += `
+    const card = `
         <div id="${asin}" class="col mt-3">
             <div class="card">
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
@@ -35,48 +15,34 @@ const booksHtml = (book) => {
                     <h5 class="card-title">${title}</h5>
                     <p class="card-text">${price}$</p>
                     <div class="d-flex gap-2">
-                        <button class="btn btn-primary cartButtons" data-asin="${asin}">Add to cart</button>
+                        <button class="btn btn-primary cartButton" data-asin="${asin}">Add to cart</button>
                         <button class="btn btn-danger skip">Skip</button>
                     </div>
                 </div>
             </div>
         </div>`;
-    addEvent(book)
-    skip()
-};
-
-
-
-const displayBooks = (books) => {
-    books.map((book) => {
-        booksHtml(book)
-    })
+    return card
 }
 
-const addEvent = (book) => {
-    const cartButtons = document.querySelectorAll(".cartButtons")
-    cartButtons.forEach((button) => {
-        button.addEventListener("click", (ev) => {
-            const target = ev.target
-            const asin = target.getAttribute("data-asin");
-            getBookById(asin)
+const addToCart = (books) => {
+    books.map((book) => {
+        const card = document.getElementById(`${book.asin}`)
+        const cartButton = card.querySelector(".cartButton")
+        cartButton.addEventListener("click", async (ev) => {
+            const id = ev.target.getAttribute("data-asin")
+            const getBook = await getBookById(id)
+            const cart = document.querySelector(".cart")
+            const badge = card.querySelector(".badge")
+
+            cart.innerHTML += `<div id="${getBook.asin}" class="container d-flex justify-content-between mb-2">
+                <img src="${getBook.img}" class="immagine" alt="copertina"/>
+                <div class="titolo">${getBook.title}</div>
+                <div class="prezzo">${getBook.price}$</div>
+                </div>`;
+
+            badge.classList.toggle("d-none")
         })
     })
-}
-
-const addToCart = (book) => {
-    const cart = document.querySelector(".cart")
-    const card = document.getElementById(`${book.asin}`)
-    const badge = card.querySelector(".badge")
-
-    cart.innerHTML += `<div id="${book.asin}" class="container d-flex justify-content-between mb-2">
-    <img src="${book.img}" class="immagine" alt="copertina"/>
-    <div class="titolo">${book.title}</div>
-    <div class="prezzo">${book.price}$</div>
-    </div>`
-
-    badge.classList.toggle("d-none")
-
 }
 
 const skip = () => {
@@ -90,3 +56,34 @@ const skip = () => {
         })
     })
 }
+
+const searchBook = () => {
+    const searchInput = document.getElementById("searchInput")
+    searchInput.addEventListener("keyup", () => {
+        const cards = document.querySelectorAll(".card")
+        cards.forEach((card) => {
+            const title = card.querySelector(".card-title").innerText.toLowerCase();
+            if (searchInput.value.length >= 3) {
+                if (title.includes(searchInput.value)) {
+                    card.parentElement.style.display = "block"
+                } else {
+                    card.parentElement.style.display = "none"
+                }
+            } else {
+                card.parentElement.style.display = "block"
+            }
+        })
+    })
+}
+
+
+const displayBooks = (books) => {
+    books.map((book) => {
+        const row = document.querySelector(".row");
+        row.innerHTML += booksHtml(book)
+    });
+    skip();
+    addToCart(books);
+    searchBook()
+}
+displayBooks(books)
