@@ -23,7 +23,7 @@ const booksHtml = (book) => {
                     <p class="card-text">${price}$</p>
                     <div class="d-flex gap-2">
                         <button class="btn btn-primary cartButton" data-asin="${asin}">Add to cart</button>
-                        <button class="btn btn-danger skipButton">Skip</button>
+                        <button class="btn btn-secondary skipButton">Skip</button>
                     </div>
                 </div>
             </div>
@@ -49,15 +49,7 @@ function eventHandler() {
     })
 
     trashButton.addEventListener("click", () => {
-        const cartHtml = document.querySelector(".cart")
-        const totalBooks = document.querySelector(".totalBooks")
-        const badge = document.querySelectorAll(".badge")
-        cartHtml.innerHTML = ""
-        totalBooks.innerHTML = 0
-        cart = []
-        badge.forEach((element) => {
-            element.classList.add("d-none")
-        })
+        deleteAll()
     })
 }
 
@@ -66,17 +58,24 @@ const addToCart = (book, index) => {
     const badge = document.querySelectorAll(".badge")
     const cartHtml = document.querySelector(".cart")
     const totalBooks = document.querySelector(".totalBooks")
+    const totalPrice = document.querySelector(".totalPrice")
+
     if (exists) {
         alert("This book is already in your cart!")
     } else {
         cart.push(book)
-        totalBooks.innerHTML = cart.length
+        totalBooks.innerHTML = (Number(totalBooks.innerHTML) +1)
+        totalPrice.innerHTML = (Number(totalPrice.innerHTML) + Number(book.price)).toFixed(2)
         cartHtml.innerHTML += `<div class="container d-flex justify-content-between align-items-center mb-2">
         <div class="itemsCount"></div>
-        <img src="${book.img}" class="immagine" alt="copertina" />
-        <div class="titolo">${book.title}</div>
-        <div class="prezzo">${book.price}$</div>
+        <img src="${book.img}" class="img" alt="copertina" />
+        <div class="title">${book.title}</div>
+        <div class="ms-2 fw-bold"><span class="price">${book.price}</span>$</div>
+        <button type="button" class="removeButton btn btn-danger ms-2" data-asin="${book.asin}">
+                <i class="bi bi-trash"></i>
+              </button>
         </div>`;
+        removeFromCart()
     }
     badge[index].classList.remove("d-none")
 }
@@ -102,6 +101,43 @@ const searchBook = () => {
                 card.parentElement.style.display = "block"
             }
         })
+    })
+}
+
+const removeFromCart = () => {
+    const removeButton = document.querySelectorAll(".removeButton")
+    removeButton.forEach((element) => {
+        element.addEventListener("click", (ev) => {
+            const cartBook = ev.target.parentElement.parentElement
+            const totalBooks = document.querySelector(".totalBooks")
+            const totalPrice = document.querySelector(".totalPrice")
+            const asin = ev.target.parentElement.getAttribute("data-asin")
+            const price = ev.target.closest("div").querySelector(".price").innerText
+            const badge = document.getElementById(`${asin}`).querySelector(".badge")
+
+            cartBook.classList.add("d-none")
+            totalBooks.innerHTML = (Number(totalBooks.innerHTML) -1)
+            totalPrice.innerHTML = (Number(totalPrice.innerHTML) - Number(price)).toFixed(2)
+            badge.classList.add("d-none")
+            
+            const findBook = cart.find(() => `${asin}`)
+            cart.splice(findBook, 1)
+        })
+    })
+}
+
+const deleteAll = () => {
+    const cartHtml = document.querySelector(".cart")
+    const totalBooks = document.querySelector(".totalBooks")
+    const badge = document.querySelectorAll(".badge")
+    const totalPrice = document.querySelector(".totalPrice")
+
+    cartHtml.innerHTML = ""
+    totalBooks.innerHTML = 0
+    cart = []
+    totalPrice.innerHTML = 0
+    badge.forEach((element) => {
+        element.classList.add("d-none")
     })
 }
 

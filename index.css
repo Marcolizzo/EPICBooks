@@ -2,13 +2,13 @@
     height: 400px;
 }
 
-.immagine{
+.img{
     aspect-ratio: 1/1;
     width: 100px;
     background-color: aqua;
 }
 
-.titolo{
+.title{
     width: 60%;
 }
 
