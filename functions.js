@@ -18,7 +18,7 @@ const booksHtml = (book) => {
                     <p class="card-text">${price}$</p>
                     <div class="d-flex justify-content-between">
                         <button class="btn btn-primary cartButton" data-asin="${asin}">Add to cart</button>
-                        <button class="btn btn-warning detailsButton">Details</button>
+                        <a class="btn btn-warning detailsButton" href="./details.html?id=${asin}">Details</a>
                         <button class="btn btn-secondary skipButton">Skip</button>
                     </div>
                 </div>
@@ -66,7 +66,7 @@ const addToCart = (book, index) => {
         totalPrice.innerHTML = (Number(totalPrice.innerHTML) + Number(book.price)).toFixed(2)
         cartHtml.innerHTML += `<div class="container d-flex justify-content-between align-items-center mb-2">
         <div class="itemsCount"></div>
-        <img src="${book.img}" class="img" alt="copertina" />
+        <img src="${book.img}" class="img" alt="cover" />
         <div class="title">${book.title}</div>
         <div class="ms-2 fw-bold"><span class="price">${book.price}</span>$</div>
         <button type="button" class="removeButton btn btn-danger ms-2" data-asin="${book.asin}">
