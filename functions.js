@@ -1,14 +1,9 @@
 import { getBooks } from "./fetch.js";
 
-// let books = []
+// empty array creation for cart
 let cart = []
 
-// window.addEventListener('DOMContentLoaded', init);
-// async function init() {
-//     books = await getBooks();
-//     displayBooks(books)
-// }
-
+// card creation in which to place books
 const booksHtml = (book) => {
     const { asin, title, img, price } = book;
     const card = `
@@ -31,6 +26,7 @@ const booksHtml = (book) => {
     return card
 }
 
+// Function to add EventListener to "Add to cart", "Skip", and "Trash" buttons.
 function eventHandler(books) {
     const cartButton = document.querySelectorAll(".cartButton")
     const skipButton = document.querySelectorAll(".skipButton")
@@ -53,6 +49,7 @@ function eventHandler(books) {
     })
 }
 
+// function to add books to cart
 const addToCart = (book, index) => {
     const exists = cart.some(element => element.asin === book.asin)
     const badge = document.querySelectorAll(".badge")
@@ -80,11 +77,13 @@ const addToCart = (book, index) => {
     badge[index].classList.remove("d-none")
 }
 
+// function to hide books from the page
 const skip = (index) => {
     const cards = document.querySelectorAll(".card")
     cards[index].parentElement.classList.add("d-none")
 }
 
+// Function to search for books after entering at least 3 characters
 const searchBook = () => {
     const searchInput = document.getElementById("searchInput")
     searchInput.addEventListener("keyup", () => {
@@ -104,6 +103,7 @@ const searchBook = () => {
     })
 }
 
+// Function to remove books from the cart individually
 const removeFromCart = () => {
     const removeButton = document.querySelectorAll(".removeButton")
     removeButton.forEach((element) => {
@@ -126,6 +126,7 @@ const removeFromCart = () => {
     })
 }
 
+// function to reset the cart
 const deleteAll = () => {
     const cartHtml = document.querySelector(".cart")
     const totalBooks = document.querySelector(".totalBooks")
@@ -141,7 +142,7 @@ const deleteAll = () => {
     })
 }
 
-
+// function to show books on page
 const displayBooks = (books) => {
     books.map((book) => {
         const row = document.querySelector(".row");
