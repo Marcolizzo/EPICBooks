@@ -16,8 +16,9 @@ const booksHtml = (book) => {
                 <div class="card-body">
                     <h5 class="card-title">${title}</h5>
                     <p class="card-text">${price}$</p>
-                    <div class="d-flex gap-2">
+                    <div class="d-flex justify-content-between">
                         <button class="btn btn-primary cartButton" data-asin="${asin}">Add to cart</button>
+                        <button class="btn btn-warning detailsButton">Details</button>
                         <button class="btn btn-secondary skipButton">Skip</button>
                     </div>
                 </div>
