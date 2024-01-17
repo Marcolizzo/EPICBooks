@@ -1,4 +1,4 @@
-import { getBooks, displayBooks } from "./functions.js";
+import { getBooks, displayBooks } from "./script.js";
 
 let books = []
 window.addEventListener('DOMContentLoaded', init);
